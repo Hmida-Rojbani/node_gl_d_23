@@ -18,7 +18,6 @@ router.get('/:stdId',(req,res)=>{
     res.send(student);
 })
 
-router.use(express.json());
 
 router.post('', (req, res) => {
     student_valid.student_post_validation(req.body,res);
