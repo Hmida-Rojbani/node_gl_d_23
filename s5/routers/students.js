@@ -4,7 +4,16 @@ const {Student} = require('../models/student')
 const _ = require('lodash')
 router.post('/', async (req, res) => {
     let student = new Student(req.body);
-    student = await student.save();
+    let val_error = student.validateData(req.body);
+    if(val_error)
+        return res.status(400).send(val_error.message);
+    
+    try {
+        student = await student.save();
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+    
     res.status(201).send(student);
 })
 
