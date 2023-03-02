@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const  mongoose = require('mongoose');
+const auth = require('../middlewares/auth');
 const { ClassRoom } = require('../models/classroom');
 
 router.post('/',async (req, res) =>{

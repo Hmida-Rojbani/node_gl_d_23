@@ -29,7 +29,7 @@ router.post('/login',async (req, res) =>{
     let user = await User.findOne({email : user_login.username})
     if(!(user && await bcrypt.compare(user_login.password,user.password)  ))
         return res.status(400).send('Username or password are not correct')
-    let token = 'Berear '+user.generateAuthToken()
+    let token = 'Bearer '+user.generateAuthToken()
     res.setHeader('Authorization',token).send('User logged in')
 })
 
