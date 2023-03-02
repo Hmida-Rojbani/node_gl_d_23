@@ -1,15 +1,27 @@
 const router = require('express').Router();
 const  mongoose = require('mongoose');
 const {Student} = require('../models/student')
-const _ = require('lodash')
+const _ = require('lodash');
+const { ClassRoom } = require('../models/classroom');
 router.post('/', async (req, res) => {
     let student = new Student(req.body);
     let val_error = student.validateData(req.body);
     if(val_error)
         return res.status(400).send(val_error.message);
-    
+        let classRoom ;
+    if(req.body.classId){
+        classRoom = await ClassRoom.findById(req.body.classId);
+    if(!classRoom)
+        return res.status(400).send('Class ID provided is not found In DB');
+    student.classRoom.id = classRoom._id;
+    student.classRoom.name=classRoom.name;
+    }
     try {
         student = await student.save();
+        if(req.body.classId){
+            classRoom.studentNumber++
+            await classRoom.save()
+        }
     } catch (error) {
         return res.status(400).send(error.message);
     }

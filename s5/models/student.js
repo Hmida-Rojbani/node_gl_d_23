@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi)
 const uniqueValidator = require('mongoose-unique-validator')
 let student_schema = new mongoose.Schema({
     name : {
@@ -28,6 +29,13 @@ let student_schema = new mongoose.Schema({
         type:String,
         required:true,
         unique:true
+    },
+    classRoom : {
+        id : {
+            type : mongoose.Types.ObjectId,
+            ref:'ClassRoom'
+        },
+        name : String
     }
 });
 student_schema.plugin(uniqueValidator)
@@ -37,7 +45,8 @@ let validation_schema = Joi.object({
     age:Joi.number().integer().min(18).required(),
     active : Joi.boolean(),
     paymentAmount : Joi.number().positive(),
-    email: Joi.string().email().required()
+    email: Joi.string().email().required(),
+    classId : Joi.objectId()
 })//.with('active','paymentAmount');
 
 student_schema.methods.validateData = function (data) {
