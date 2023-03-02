@@ -3,7 +3,9 @@ const  mongoose = require('mongoose');
 const {Student} = require('../models/student')
 const _ = require('lodash');
 const { ClassRoom } = require('../models/classroom');
-router.post('/', async (req, res) => {
+const auth = require('../middlewares/auth');
+const autoris = require('../middlewares/autoris');
+router.post('/',[auth,autoris], async (req, res) => {
     let student = new Student(req.body);
     let val_error = student.validateData(req.body);
     if(val_error)
